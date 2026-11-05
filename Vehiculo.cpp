@@ -1,55 +1,135 @@
 
-#include<iostream>
-#include<string>
+#include <iostream>
+#include <string>
 using namespace std;
 
+class Vehiculo {
+protected:
+    string numeroPlaca;
+    string color;
+    string marca;
+    double velocimetro;
 
-//Clase base Vehiculo ----------------------------------------------
-class Vehiculo{
-  public:
-   string placa;
-   float color;
-   string marca;
-   float velocimetro;
-   void mostrarDatos();
-   void cambiarCarga(float v);
-   float getVelocidad(){
-     return velocimetro;
-   }    
-   Vehiculo(string p, float c, string m, float v);
+public:
+    Vehiculo(string numeroPlaca, string color, string marca, double velocimetro) {
+        this->numeroPlaca = numeroPlaca;
+        this->color = color;
+        this->marca = marca;
+        this->velocimetro = velocimetro;
+    }
+
+  
+    void mostrarDatos() {
+        cout << "Placa: " << numeroPlaca << endl;
+        cout << "Color: " << color << endl;
+        cout << "Marca: " << marca << endl;
+        cout << "Velocimetro: " << velocimetro << " km/h" << endl;
+    }
+
+    // Cambia la velocidad actual (no se permiten velocidades negativas)
+    void cambiarVelocidad(double nuevaVelocidad) {
+        if (nuevaVelocidad < 0) {
+            cout << "La velocidad no puede ser negativa." << endl;
+        } else {
+            velocimetro = nuevaVelocidad;
+        }
+    }
 };
 
-  Vehiculo::Vehiculo(string p, float c, string m, float v){
-  placa = p;
-  color = c;
-  marca = m;
-  velocimetro = v;
- 
-}
-void Vehiculo::mostrarDatos(){
-  cout<<"Placa: "<<placa<<endl;
-  cout<<"Color: "<<color<<endl;
-  cout<<"Marca: "<<marca<<endl;
-  cout<<"Velocimetro: "<<velocimetro<<endl;
-}
-void Vehiculo::cambiarCarga(float v){
-  velocimetro = v;
-}
-class automovil:public Vehiculo{
-  public:
-   int numPuertas;
-   string tipoCombustible;
-};
-class Camion:public Vehiculo{
-  public:
-   int numEjes;
-   float capacidadCarga;
-};
-int main(){
-  Vehiculo v1("82183", 255, "Toyota", 120);
-  v1.mostrarDatos();
-  v1.cambiarCarga(150);
-  v1.mostrarDatos();
+// ---------------------------------------------------------
+// Clase derivada: Automovil
+// ---------------------------------------------------------
+class Automovil : public Vehiculo {
+private:
+    int cantidadPuertas;
+    int cantidadPasajeros; // pasajeros que van a bordo actualmente
+
+public:
+    
+    Automovil(string numeroPlaca, string color, string marca, double velocimetro,
+              int cantidadPuertas, int cantidadPasajeros)
+        : Vehiculo(numeroPlaca, color, marca, velocimetro) {
+        this->cantidadPuertas = cantidadPuertas;
+        this->cantidadPasajeros = cantidadPasajeros;
+    }
 
 
+    void mostrarAutomovil() {
+        cout << "=== Automovil ===" << endl;
+        mostrarDatos();
+        cout << "Puertas: " << cantidadPuertas << endl;
+        cout << "Pasajeros: " << cantidadPasajeros << endl;
+        cout << endl;
+    }
+
+
+    void subirPasajeros(int cantidad) {
+        if (cantidad > 0) {
+            cantidadPasajeros += cantidad;
+        }
+    }
+
+    // Resta pasajeros, sin bajar de 0
+    void bajarPasajeros(int cantidad) {
+        if (cantidad > cantidadPasajeros) {
+            cout << "No hay tantos pasajeros a bordo." << endl;
+        } else if (cantidad > 0) {
+            cantidadPasajeros -= cantidad;
+        }
+    }
+};
+
+
+class Camion : public Vehiculo {
+private:
+    double carga; 
+
+public:
+    Camion(string numeroPlaca, string color, string marca, double velocimetro,
+           double carga)
+        : Vehiculo(numeroPlaca, color, marca, velocimetro) {
+        this->carga = carga;
+    }
+
+    // Muestra los datos del vehículo más la carga del camión
+    void mostrarCamion() {
+        cout << "=== Camion ===" << endl;
+        mostrarDatos();
+        cout << "Carga: " << carga << " toneladas" << endl;
+        cout << endl;
+    }
+
+    // Cambia la carga actual del camión
+    void cambiarCarga(double nuevaCarga) {
+        if (nuevaCarga < 0) {
+            cout << "La carga no puede ser negativa." << endl;
+        } else {
+            carga = nuevaCarga;
+        }
+    }
+};
+
+int main() {
+   
+    Automovil auto1("ABC-123", "Rojo", "Toyota", 0, 4, 2);
+    Camion camion1("XYZ-789", "Blanco", "Volvo", 0, 10);
+
+    cout << "----- DATOS INICIALES -----" << endl;
+    auto1.mostrarAutomovil();
+    camion1.mostrarCamion();
+
+   
+    auto1.cambiarVelocidad(60);
+    auto1.subirPasajeros(2);
+    auto1.bajarPasajeros(1);
+
+    camion1.cambiarVelocidad(45);
+    camion1.cambiarCarga(15);
+
+   
+    cout << "----- DATOS DESPUES DE LOS CAMBIOS -----" << endl;
+    auto1.mostrarAutomovil();
+    camion1.mostrarCamion();
+
+    return 0;
 }
