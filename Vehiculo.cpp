@@ -26,7 +26,6 @@ public:
         cout << "Velocimetro: " << velocimetro << " km/h" << endl;
     }
 
-    // Cambia la velocidad actual (no se permiten velocidades negativas)
     void cambiarVelocidad(double nuevaVelocidad) {
         if (nuevaVelocidad < 0) {
             cout << "La velocidad no puede ser negativa." << endl;
@@ -36,13 +35,10 @@ public:
     }
 };
 
-// ---------------------------------------------------------
-// Clase derivada: Automovil
-// ---------------------------------------------------------
 class Automovil : public Vehiculo {
 private:
     int cantidadPuertas;
-    int cantidadPasajeros; // pasajeros que van a bordo actualmente
+    int cantidadPasajeros;
 
 public:
     
@@ -55,7 +51,7 @@ public:
 
 
     void mostrarAutomovil() {
-        cout << "=== Automovil ===" << endl;
+        cout << " Automovil " << endl;
         mostrarDatos();
         cout << "Puertas: " << cantidadPuertas << endl;
         cout << "Pasajeros: " << cantidadPasajeros << endl;
@@ -68,8 +64,6 @@ public:
             cantidadPasajeros += cantidad;
         }
     }
-
-    // Resta pasajeros, sin bajar de 0
     void bajarPasajeros(int cantidad) {
         if (cantidad > cantidadPasajeros) {
             cout << "No hay tantos pasajeros a bordo." << endl;
@@ -91,15 +85,12 @@ public:
         this->carga = carga;
     }
 
-    // Muestra los datos del vehículo más la carga del camión
     void mostrarCamion() {
         cout << "=== Camion ===" << endl;
         mostrarDatos();
         cout << "Carga: " << carga << " toneladas" << endl;
         cout << endl;
     }
-
-    // Cambia la carga actual del camión
     void cambiarCarga(double nuevaCarga) {
         if (nuevaCarga < 0) {
             cout << "La carga no puede ser negativa." << endl;
@@ -111,10 +102,10 @@ public:
 
 int main() {
    
-    Automovil auto1("ABC-123", "Rojo", "Toyota", 0, 4, 2);
+
+   Automovil auto1("ABC-123", "Rojo", "Toyota", 0, 4, 2);
     Camion camion1("XYZ-789", "Blanco", "Volvo", 0, 10);
 
-    cout << "----- DATOS INICIALES -----" << endl;
     auto1.mostrarAutomovil();
     camion1.mostrarCamion();
 
@@ -127,9 +118,9 @@ int main() {
     camion1.cambiarCarga(15);
 
    
-    cout << "----- DATOS DESPUES DE LOS CAMBIOS -----" << endl;
     auto1.mostrarAutomovil();
     camion1.mostrarCamion();
 
     return 0;
 }
+
